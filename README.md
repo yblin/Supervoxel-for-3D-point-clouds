@@ -55,7 +55,7 @@ Please see main.cc for more details.
 
 ## Sample results. 
 
-<img src="https://www.csie.ntu.edu.tw/~r01944012/cvprw15-cifar10.png" width="1000">
+<img src="https://github.com/yblin/Supervoxel-for-3D-point-clouds/blob/master/sample1.png" width="1000">
 
 ## Contact
 
