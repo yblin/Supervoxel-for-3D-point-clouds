@@ -56,6 +56,8 @@ Please see main.cc for more details.
 
 ## Sample results. 
 
+The first column is the orignal point cloud with ground-truth annotation. The second column is the supervoxel segmentation by VCCS. The third column is the VCCS method with kNN variation. And the last column is the result obtained by this library.
+
 <img src="https://github.com/yblin/Supervoxel-for-3D-point-clouds/blob/master/sample1.png" width="1000">
 
 ## Contact
