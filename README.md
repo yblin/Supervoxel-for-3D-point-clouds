@@ -8,22 +8,50 @@ The details can be found in the following [ISPRS 2018 paper](https://www.science
 ## Citing our work
 If you find our works useful in your research, please consider citing:
 
-   Lin Y, Wang C, Zhai D, et al. Toward better boundary preserved supervoxel segmentation for 3D point clouds. Isprs Journal of Photogrammetry & Remote Sensing, 2018.
+	Lin Y, Wang C, Zhai D, et al. Toward better boundary preserved supervoxel segmentation for 3D point clouds. Isprs Journal of Photogrammetry & Remote Sensing, 2018.
    
 ## Install & complie
 
 Please directly copy the code into your workspace and complie it with any complier that supports C++11. It dose not require linking any additional libraries.
 
 ## Sample usage:
-	cl::geometry::point_cloud::SupervoxelSegmentation(oriented_points,
-													  neighbors,
-													  resolution,
-												      metric,
-													  &supervoxels,
-													  &labels);
+	cl::geometry::point_cloud::SupervoxelSegmentation(points, neighbors, resolution, metric, &supervoxels, &labels);
 
-Where, 'oriented_points' is the source points, it can be read from XYZ file by calling: 
-cl::geometry::io::ReadXYZPoints(filename.c_str(), &points);
+Where, 'points' is the source points, it can be read from XYZ file by calling: 
+	cl::geometry::io::ReadXYZPoints(filename.c_str(), &points);
 
-See main.cc for more details.
+'neighbors' gives the neighborhood for each points. It can be constrcuted by compute k-neareast neighbors of each point. For example:
 
+	const int k_neighbors = 15;
+	cl::Array<cl::Array<int> > neighbors(n_points);
+    cl::Array<cl::RPoint3D> neighbor_points(k_neighbors);
+    for (int i = 0; i < n_points; ++i) {
+        kdtree.FindKNearestNeighbors(kdtree.points()[i], k_neighbors, &neighbors[i]);
+	}
+	
+'resolution' is the used to determine the number of supervoxels you want.
+'metric' is used to evaluate the feature distance between two points. In our paper, we use the following metric, which is same to the VCCS.
+	
+	class VCCSMetric {
+	public:
+		explicit VCCSMetric(double resolution)
+			: resolution_(resolution) {}
+
+		double operator() (const PointWithNormal& p1,
+						   const PointWithNormal& p2) const {
+			return 1.0 - std::fabs(p1.normal * p2.normal) +
+				   cl::geometry::Distance(p1, p2) / resolution_ * 0.4;
+		}
+
+	private:
+		double resolution_;
+	};
+	
+The output 'supervoxels' is an array that stores the indices of the representation points. 
+And 'labels' is used to denote which supervoxel owns the i-th point.
+	
+Please see main.cc for more details.
+
+## Contact
+
+Please feel free to leave suggestions or comments to Yangbin Lin (yblin@jmu.edu.cn), or Wang Cheng (cwang@xmu.edu.cn)
