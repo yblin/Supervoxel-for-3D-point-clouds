@@ -17,10 +17,10 @@ Please directly copy the code into your workspace and complie it with any compli
 ## Sample usage:
 	cl::geometry::point_cloud::SupervoxelSegmentation(points, neighbors, resolution, metric, &supervoxels, &labels);
 
-Where, 'points' is the source points, it can be read from XYZ file by calling: 
+Where, 'points' is the input 3D point cloud. It can be read from XYZ file by calling: 
 	cl::geometry::io::ReadXYZPoints(filename.c_str(), &points);
 
-'neighbors' gives the neighborhood for each points. It can be constrcuted by compute k-neareast neighbors of each point. For example:
+'neighbors' gives the neighborhood for each point. It can be constrcuted by compute k-neareast neighbors of each point. For example:
 
 	const int k_neighbors = 15;
 	cl::Array<cl::Array<int> > neighbors(n_points);
@@ -29,7 +29,7 @@ Where, 'points' is the source points, it can be read from XYZ file by calling:
         kdtree.FindKNearestNeighbors(kdtree.points()[i], k_neighbors, &neighbors[i]);
 	}
 	
-'resolution' is the used to determine the number of supervoxels you want.
+'resolution' is used to determine the number of supervoxels you want.
 'metric' is used to evaluate the feature distance between two points. In our paper, we use the following metric, which is same to the VCCS.
 	
 	class VCCSMetric {
@@ -52,6 +52,12 @@ And 'labels' is used to denote which supervoxel owns the i-th point.
 	
 Please see main.cc for more details.
 
+
+## Sample results. 
+
+<img src="https://www.csie.ntu.edu.tw/~r01944012/cvprw15-cifar10.png" width="1000">
+
 ## Contact
 
 Please feel free to leave suggestions or comments to Yangbin Lin (yblin@jmu.edu.cn), or Wang Cheng (cwang@xmu.edu.cn)
+
