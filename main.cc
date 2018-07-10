@@ -44,6 +44,7 @@ int main() {
 
     LOG(INFO) << "Reading points from " << filename << "...";
     if (!cl::geometry::io::ReadXYZPoints(filename.c_str(), &points, &colors)) {
+        LOG(INFO) << "Please check if " << filename << " is exist.";
         return 0;
     }
     int n_points = points.size();
