@@ -62,5 +62,5 @@ The first column is the orignal point cloud with ground-truth annotation. The se
 
 ## Contact
 
-Please feel free to leave suggestions or comments to Yangbin Lin (yblin@jmu.edu.cn), or Wang Cheng (cwang@xmu.edu.cn)
+Please feel free to leave suggestions or comments to Dr. Lin (yblin@jmu.edu.cn), or Prof. Wang (cwang@xmu.edu.cn)
 
