@@ -8,7 +8,7 @@ The details can be found in the following [ISPRS 2018 paper](https://www.science
 ## Citing our work
 If you find our works useful in your research, please consider citing:
 
-	Lin Y, Wang C, Zhai D, et al. Toward better boundary preserved supervoxel segmentation for 3D point clouds. Isprs Journal of Photogrammetry & Remote Sensing, vol. 143, pages 39-47, 2018.
+	Lin Y, Wang C, Zhai D, W Li, and J Li. Toward better boundary preserved supervoxel segmentation for 3D point clouds. Isprs Journal of Photogrammetry & Remote Sensing, vol. 143, pages 39-47, 2018.
 	
 ### BibTex
 
