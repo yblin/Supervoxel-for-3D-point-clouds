@@ -22,7 +22,7 @@ If you find our works useful in your research, please consider citing:
 		issn = "0924-2716",
 		doi = "https://doi.org/10.1016/j.isprsjprs.2018.05.004",
 		url = "http://www.sciencedirect.com/science/article/pii/S0924271618301370",
-		author = "Yangbin Lin and Cheng Wang and Dawei Zhai and Wei Li and Jonathan Li",
+		author = "Lin, Yangbin and Wang, Cheng and Zhai, Dawei and Li, Wei and Li, Jonathan",
 		keywords = "Supervoxel segmentation, Point clouds, Subset selection, Over-segmentation"
 	}
    
