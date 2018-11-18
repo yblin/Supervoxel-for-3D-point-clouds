@@ -69,6 +69,7 @@ And 'labels' is used to denote which supervoxel owns the i-th point.
 	
 Please see main.cc for more details.
 
+The file "test.xyz" can be found in test_data.
 
 ## Sample results. 
 
