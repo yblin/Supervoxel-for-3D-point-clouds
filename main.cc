@@ -5,6 +5,9 @@
 #include "codelibrary/geometry/util/distance_3d.h"
 #include "codelibrary/util/tree/kd_tree.h"
 
+#include "vccs_knn_supervoxel.h"
+#include "vccs_supervoxel.h"
+
 /// Point with Normal.
 struct PointWithNormal : cl::RPoint3D {
     PointWithNormal() {}
@@ -33,6 +36,30 @@ public:
 private:
     double resolution_;
 };
+
+/**
+ * Save point clouds (with segmentation colors) into the file.
+ */
+void WritePoints(const char* filename,
+                 int n_supervoxels,
+                 const cl::Array<cl::RPoint3D>& points,
+                 const cl::Array<int>& labels) {
+    cl::Array<cl::RGB32Color> colors(points.size());
+    std::mt19937 random;
+    cl::Array<cl::RGB32Color> supervoxel_colors(n_supervoxels);
+    for (int i = 0; i < n_supervoxels; ++i) {
+        supervoxel_colors[i] = cl::RGB32Color(random());
+    }
+    for (int i = 0; i < points.size(); ++i) {
+        colors[i] = supervoxel_colors[labels[i]];
+    }
+
+    if (cl::geometry::io::WriteXYZPoints(filename, points, colors)) {
+        LOG(INFO) << "The points are written into " << filename;
+    }
+
+//    system(filename);
+}
 
 int main() {
     LOG_ON(INFO);
@@ -85,7 +112,7 @@ int main() {
         oriented_points[i].normal = normals[i];
     }
 
-    const double resolution = 0.5;
+    const double resolution = 1.0;
     VCCSMetric metric(resolution);
     cl::Array<int> labels, supervoxels;
     cl::geometry::point_cloud::SupervoxelSegmentation(oriented_points,
@@ -97,21 +124,44 @@ int main() {
 
     int n_supervoxels = supervoxels.size();
     LOG(INFO) << n_supervoxels << " supervoxels computed.";
+    WritePoints("out.xyz", n_supervoxels, points, labels);
 
-    std::mt19937 random;
-    cl::Array<cl::RGB32Color> supervoxel_colors(n_supervoxels);
-    for (int i = 0; i < n_supervoxels; ++i) {
-        supervoxel_colors[i] = cl::RGB32Color(random());
-    }
-    for (int i = 0; i < n_points; ++i) {
-        colors[i] = supervoxel_colors[labels[i]];
-    }
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
 
-    if (cl::geometry::io::WriteXYZPoints("out.xyz", points, colors)) {
-        LOG(INFO) << "The points are written into out.xyz";
-    }
+    LOG(INFO) << "Start VCCS supervoxel segmentation...";
 
-    system("out.xyz");
+    // Note that, you may need to change the resolution of voxel.
+    const double voxel_resolution = 0.03;
+
+    VCCSSupervoxel vccs(points.begin(), points.end(),
+                        voxel_resolution,
+                        resolution);
+    cl::Array<int> vccs_labels;
+    cl::Array<VCCSSupervoxel::Supervoxel> vccs_supervoxels;
+    vccs.Segment(&vccs_labels, &vccs_supervoxels);
+
+    n_supervoxels = vccs_supervoxels.size();
+    LOG(INFO) << n_supervoxels << " supervoxels computed.";
+    WritePoints("out_vccs.xyz", n_supervoxels, points, vccs_labels);
+
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+
+    LOG(INFO) << "Start KNN variant of VCCS supervoxel segmentation...";
+
+    kdtree.SwapPoints(&points);
+    VCCSKNNSupervoxel vccs_knn(kdtree, resolution);
+    cl::Array<int> vccs_knn_labels;
+    cl::Array<VCCSKNNSupervoxel::Supervoxel> vccs_knn_supervoxels;
+    vccs_knn.Segment(&vccs_knn_labels, &vccs_knn_supervoxels);
+    kdtree.SwapPoints(&points);
+
+    n_supervoxels = vccs_knn_supervoxels.size();
+    LOG(INFO) << n_supervoxels << " supervoxels computed.";
+    WritePoints("out_vccs_knn.xyz", n_supervoxels, points, vccs_knn_labels);
 
     return 0;
 }

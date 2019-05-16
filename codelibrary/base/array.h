@@ -201,27 +201,13 @@ public:
     }
 
     /**
-     * Resize the vector to the specified number of elements.
+     * Preallocate the memory to the array.
      */
     void reserve(int capacity) {
         assert(capacity >= 0);
 
         if (real_end_ - begin_ >= capacity) return;
-
-        T* begin = Allocate(capacity);
-        if (begin_) {
-            if (std::is_trivially_copyable<T>::value) {
-                std::uninitialized_copy(begin_, end_, begin);
-            } else {
-                std::uninitialized_copy(std::make_move_iterator(begin_),
-                                        std::make_move_iterator(end_),
-                                        begin);
-            }
-            Destruct();
-        }
-        end_ += begin - begin_;
-        begin_ = begin;
-        real_end_ = begin_ + capacity;
+        Reallocate(capacity);
     }
 
     /**
@@ -463,9 +449,16 @@ public:
         }
     }
 
+    /**
+     * Shrink the array, release the memory.
+     */
+    void shrink_to_fit() {
+        if (end_ != real_end_) Reallocate(size());
+    }
+
 protected:
     /**
-     * Return a new size 'n' ofr push_pack.
+     * Return a new size 'n' of push_pack.
      *
      * std::vector implements a similar function with a different growth
      * strategy: empty() ? 1 : capacity() * 2.
@@ -473,14 +466,13 @@ protected:
      * Array<T> grows differently on two counts:
      *
      * (1) initial size
-     *     Instead of growing to size 1 from empty, fbvector allocates at least
-     *     64 bytes. You may still use reserve to reserve a lesser amount of
-     *     memory.
+     *     Instead of growing to size 1 from empty, we allocate at least 64
+     *     bytes. You may still use reserve to get a lesser amount of memory.
      *
      * (2) 1.5x
      *     For medium-sized vectors, the growth strategy is 1.5x.
-     *     This does not apply to very small or very large array. This is a
-     *     heuristic.
+     *     This does not apply to very small or very large array.
+     *     This is a heuristic.
      */
     static int ExtendSize(int size) {
         if (size == 0) {
@@ -531,6 +523,26 @@ protected:
         T* t = reinterpret_cast<T*>(std::malloc(size * sizeof(T)));
         assert(t && "Memory is not enough");
         return t;
+    }
+
+    /**
+     * Reallocate data.
+     */
+    void Reallocate(int size) {
+        T* begin = Allocate(size);
+        if (begin_) {
+            if (std::is_trivially_copyable<T>::value) {
+                std::uninitialized_copy(begin_, end_, begin);
+            } else {
+                std::uninitialized_copy(std::make_move_iterator(begin_),
+                                        std::make_move_iterator(end_),
+                                        begin);
+            }
+            Destruct();
+        }
+        end_ += begin - begin_;
+        begin_ = begin;
+        real_end_ = begin_ + size;
     }
 
     /**
