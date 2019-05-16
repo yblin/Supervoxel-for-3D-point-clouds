@@ -77,6 +77,10 @@ The first column is the orignal point cloud with ground-truth annotation. The se
 
 <img src="https://github.com/yblin/Supervoxel-for-3D-point-clouds/blob/master/sample1.png" width="1000">
 
+## Comparison
+For comparison, we also provide our implementation of VCCS and its variant (See main.cc for more details). 
+Please feel free to use it.
+
 ## Contact
 
 Please feel free to leave suggestions or comments to Dr. Lin (yblin@jmu.edu.cn), or Prof. Wang (cwang@xmu.edu.cn)
