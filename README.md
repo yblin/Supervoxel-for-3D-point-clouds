@@ -37,7 +37,7 @@ Where, 'points' is the input 3D point cloud. It can be read from XYZ file by cal
 
 	cl::geometry::io::ReadXYZPoints(filename.c_str(), &points);
 
-'neighbors' gives the neighborhood for each point. It can be constrcuted by compute k-neareast neighbors of each point. For example:
+'neighbors' gives the neighborhood for each point. It can be constrcuted by computing k-neareast neighbors of each point. For example:
 
 	const int k_neighbors = 15;
 	cl::Array<cl::Array<int> > neighbors(n_points);
