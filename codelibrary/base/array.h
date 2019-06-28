@@ -18,7 +18,7 @@ namespace cl {
 
 /// 1D Array.
 /**
- * A STL-like 1D array templated class.
+ * A STL-like 1D array template class.
  *
  * It is essentially a STL vector, but has a 'int' typed 'size()'. It means that
  * there are at most INT_MAX elements in the Array.
@@ -118,7 +118,7 @@ public:
     /**
      * Build array from initializer list.
      *
-     * Note that this constructor can not be explicited.
+     * Note that this constructor can not be explicite.
      */
     Array(std::initializer_list<T> list)
         : Array(list.begin(), list.end()) {}
@@ -540,7 +540,7 @@ protected:
             }
             Destruct();
         }
-        end_ += begin - begin_;
+        end_ = begin + (end_ - begin_);
         begin_ = begin;
         real_end_ = begin_ + size;
     }
