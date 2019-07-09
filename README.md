@@ -71,9 +71,13 @@ Please see main.cc for more details.
 
 The file "test.xyz" can be found in test_data.
 
+## Comparison
+For comparison, we also provide our implementation of VCCS and its variant (See main.cc for more details). 
+Please feel free to use it.
+
 ## Sample results. 
 
-The first column is the orignal point cloud with ground-truth annotation. The second column is the supervoxel segmentation by VCCS. The third column is the VCCS method with kNN variation. And the last column is the result obtained by this library.
+The first column is the orignal point cloud with ground-truth annotation. The second column is the supervoxel segmentation by VCCS (found in vccs_supervoxel.h) . The third column is the VCCS method with kNN variation (found in vccs_knn_supervoxel.h). And the last column is the result obtained by our method.
 
 <img src="https://github.com/yblin/Supervoxel-for-3D-point-clouds/blob/master/sample1.png" width="1000">
 
