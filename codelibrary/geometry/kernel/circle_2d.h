@@ -10,7 +10,13 @@
 #define GEOMETRY_KERNEL_CIRCLE_2D_H_
 
 #include <cassert>
+
+#ifndef _USE_MATH_DEFINES
+#define _USE_MATH_DEFINES
+#include <math.h>
+#else
 #include <cmath>
+#endif // _USE_MATH_DEFINES
 
 #include "codelibrary/geometry/kernel/point_2d.h"
 #include "codelibrary/geometry/kernel/box_2d.h"

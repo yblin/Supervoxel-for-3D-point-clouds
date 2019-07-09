@@ -9,6 +9,13 @@
 #ifndef MATH_ANGLE_H_
 #define MATH_ANGLE_H_
 
+#ifndef _USE_MATH_DEFINES
+#define _USE_MATH_DEFINES
+#include <math.h>
+#else
+#include <cmath>
+#endif // _USE_MATH_DEFINES
+
 #include "codelibrary/math/vector.h"
 
 namespace cl {

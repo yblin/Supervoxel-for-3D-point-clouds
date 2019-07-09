@@ -13,6 +13,13 @@
 #include <cassert>
 #include <cfloat>
 
+#ifndef _USE_MATH_DEFINES
+#define _USE_MATH_DEFINES
+#include <math.h>
+#else
+#include <cmath>
+#endif // _USE_MATH_DEFINES
+
 #include "codelibrary/base/array.h"
 #include "codelibrary/statistics/regression/linear_least_squares_fitting.h"
 #include "codelibrary/util/metric/squared_euclidean.h"
