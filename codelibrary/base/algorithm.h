@@ -13,6 +13,7 @@
 #include <cassert>
 #include <climits>
 #include <functional>
+#include <numeric>
 
 #include "codelibrary/base/array.h"
 
