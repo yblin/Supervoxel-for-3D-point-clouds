@@ -112,7 +112,9 @@ int main() {
         oriented_points[i].normal = normals[i];
     }
 
+    // NOTE!!! Change the resolution to get variable sized supervoxels.
     const double resolution = 1.0;
+
     VCCSMetric metric(resolution);
     cl::Array<int> labels, supervoxels;
     cl::geometry::point_cloud::SupervoxelSegmentation(oriented_points,
