@@ -114,7 +114,7 @@ void SupervoxelSegmentation(const Array<Point>& points,
 
     // ------------------------------------------------------------------
     // ---------------- Step 1: Find supervoxels. -----------------------
-    for (; ; lambda *= 2.0) {
+    for (; lambda < 1e20; lambda *= 2.0) {
         if (supervoxels->size() <= 1) break;
 
         for (int i : *supervoxels) {
@@ -160,6 +160,7 @@ void SupervoxelSegmentation(const Array<Point>& points,
             for (int j = 0; j < back; ++j) {
                 visited[queue[j]] = false;
             }
+
             if (number_of_supervoxels == n_supervoxels) break;
         }
 
