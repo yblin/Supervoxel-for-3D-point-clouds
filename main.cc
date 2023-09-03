@@ -61,10 +61,10 @@ void WritePoints(const char* filename,
 //    system(filename);
 }
 
-int main() {
+int main(int argc, char** argv) {
     LOG_ON(INFO);
 
-    const std::string filename = "test.xyz";
+    const std::string filename = argv[1];
 
     cl::Array<cl::RPoint3D> points;
     cl::Array<cl::RGB32Color> colors;
